@@ -53,7 +53,7 @@ def callback():
         return jsonify(token_data), 400
 
     # Set the access token in a secure cookie and redirect to your main app
-    response = make_response(redirect('https://mineskitycoon.neocities.org/index.html', code=302))
+    response = make_response(redirect('https://mineskitycoon.neocities.org', code=302))
     response.set_cookie('accessToken', token_data['access_token'], secure=True, httponly=True, samesite='Strict')
     return response
 
