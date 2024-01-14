@@ -1,2 +1,1 @@
-    web: gunicorn ssostuff:app
-    ```
+web: gunicorn ssostuff.wsgi:app
