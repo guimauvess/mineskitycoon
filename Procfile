@@ -1,2 +1,2 @@
-    web: gunicorn -w 4 ssostuff:app
+    web: gunicorn ssostuff:app
     ```
