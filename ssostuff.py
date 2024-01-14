@@ -6,8 +6,8 @@ import os
 app = Flask(__name__)
 
 # Replace these with your actual client ID and secret from EVE SSO
-client_id = os.environ.get('4d9f7eb4dc2c4e11b14fb1ae9b1a1f68')
-client_secret = os.environ.get('4R7xcILVIt7OkPpqNXsVNKk1ae1kbspRjLC1zglX')
+client_id = os.environ.get('CLIENT_ID')
+client_secret = os.environ.get('CLIENT_SECRET')
 callback_url = os.environ.get('CALLBACK_URL')
 
 @app.route('/')
