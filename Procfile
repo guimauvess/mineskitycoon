@@ -1,1 +1,1 @@
-web: gunicorn ssostuff.wsgi:app
+web: gunicorn ssostuff:app
