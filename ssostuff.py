@@ -47,7 +47,10 @@ def callback():
     }
 
     token_response = requests.post('https://login.eveonline.com/v2/oauth/token', headers=headers, data=data)
+    # Print the raw response text
+    print(token_response.text)
     token_data = token_response.json()
+
 
     if 'error' in token_data:
         return jsonify(token_data), 400
