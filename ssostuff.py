@@ -6,9 +6,16 @@ import os
 app = Flask(__name__)
 
 # Replace these with your actual client ID and secret from EVE SSO
-client_id = os.environ.get('client_id')
-client_secret = os.environ.get('client_secret')
-callback_url = os.environ.get('callback_url')
+client_id = os.environ.get('eve_client_id')
+client_secret = os.environ.get('eve_client_secret')
+callback_url = os.environ.get('eve_callback_url')
+
+auth_string = f'{client_id}:{client_secret}'
+print(f'Auth String: {auth_string}')  # Log the auth string for debugging
+
+auth_bytes = auth_string.encode('utf-8')
+auth_b64 = base64.b64encode(auth_bytes).decode('utf-8')
+print(f'Auth Base64: {auth_b64}')  # Log the base64-encoded auth string for debugging
 
 @app.route('/')
 def index():
