@@ -82,7 +82,7 @@ def callback():
 
     # Set the access token in a secure cookie and redirect to your main app
     response = make_response(redirect('https://mineskitycoon.neocities.org', code=302))
-    response.set_cookie('accessToken', token_data['access_token'], secure=True, samesite='Strict', domain='mineskitycoon.neocities.org')
+    response.set_cookie('accessToken', token_data['access_token'], secure=True, httponly=True, samesite='Lax', domain='mineskitycoon.neocities.org')
     return response
 
 
