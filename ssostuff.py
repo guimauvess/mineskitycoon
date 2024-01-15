@@ -47,10 +47,14 @@ def callback():
     }
 
     token_response = requests.post('https://login.eveonline.com/v2/oauth/token', headers=headers, data=data)
-    # Print the raw response text
-    print(token_response.text)
-    token_data = token_response.json()
 
+    # Check the status code before decoding JSON
+    if token_response.status_code != 200:
+        # Log the error response for debugging
+        print(f'Error response: {token_response.text}')
+        return jsonify({'error': 'Failed to retrieve token', 'details': token_response.text}), token_response.status_code
+
+    token_data = token_response.json()
 
     if 'error' in token_data:
         return jsonify(token_data), 400
