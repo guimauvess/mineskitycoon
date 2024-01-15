@@ -18,7 +18,7 @@ def index():
         '?response_type=code'
         f'&redirect_uri={callback_url}'
         f'&client_id={client_id}'
-        '&scope=esi-characters.read_blueprints.v1'
+        '&scope=esi-wallet.read_character_wallet.v1 esi-corporations.read_corporation_membership.v1 esi-planets.manage_planets.v1 esi-markets.structure_markets.v1 esi-characters.read_corporation_roles.v1 esi-killmails.read_corporation_killmails.v1 esi-corporations.read_titles.v1'
         '&state=unique-state-string'  # Generate and verify this value for each request
     )
     return redirect(auth_url, code=302)
@@ -32,6 +32,10 @@ def callback():
         return jsonify({'error': 'Missing authorization code'}), 400
 
     # Exchange the authorization code for an access token
+    client_id = os.environ.get('EVE_CLIENT_ID')  # Use the actual name of your environment variable
+    client_secret = os.environ.get('EVE_CLIENT_SECRET')  # Use the actual name of your environment variable
+    callback_url = os.environ.get('EVE_CALLBACK_URL')  # Use the actual name of your environment variable
+
     auth_string = f'{client_id}:{client_secret}'
     auth_bytes = auth_string.encode('utf-8')
     auth_b64 = base64.b64encode(auth_bytes).decode('utf-8')
@@ -48,13 +52,19 @@ def callback():
 
     token_response = requests.post('https://login.eveonline.com/v2/oauth/token', headers=headers, data=data)
 
+    # Log the response for debugging
+    print(f'Status Code: {token_response.status_code}')
+    print(f'Response Headers: {token_response.headers}')
+    print(f'Response Content: {token_response.text}')
+
     # Check the status code before decoding JSON
     if token_response.status_code != 200:
-        # Log the error response for debugging
-        print(f'Error response: {token_response.text}')
         return jsonify({'error': 'Failed to retrieve token', 'details': token_response.text}), token_response.status_code
 
-    token_data = token_response.json()
+    try:
+        token_data = token_response.json()
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Invalid JSON response', 'details': token_response.text}), 500
 
     if 'error' in token_data:
         return jsonify(token_data), 400
@@ -63,6 +73,7 @@ def callback():
     response = make_response(redirect('https://mineskitycoon.neocities.org', code=302))
     response.set_cookie('accessToken', token_data['access_token'], secure=True, httponly=True, samesite='Strict')
     return response
+
 
 if __name__ == '__main__':
     app.run()
