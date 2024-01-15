@@ -6,9 +6,9 @@ import os
 app = Flask(__name__)
 
 # Replace these with your actual client ID and secret from EVE SSO
-client_id = os.environ.get('4d9f7eb4dc2c4e11b14fb1ae9b1a1f68')
-client_secret = os.environ.get('4R7xcILVIt7OkPpqNXsVNKk1ae1kbspRjLC1zglX')
-callback_url = os.environ.get('https://mineski-tycoon.onrender.com/callback')
+client_id = os.environ.get('client_id')
+client_secret = os.environ.get('client_secret')
+callback_url = os.environ.get('callback_url')
 
 @app.route('/')
 def index():
