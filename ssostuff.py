@@ -55,7 +55,6 @@ def callback():
         'grant_type': 'authorization_code',
         'code': code,
         'redirect_uri': callback_url,
-        'client_id': client_id
     }
 
     token_response = requests.post(
