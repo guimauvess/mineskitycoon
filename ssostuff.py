@@ -39,9 +39,9 @@ def callback():
         return jsonify({'error': 'Missing authorization code'}), 400
 
     # Exchange the authorization code for an access token
-    client_id = os.environ.get('EVE_CLIENT_ID')  # Use the actual name of your environment variable
-    client_secret = os.environ.get('EVE_CLIENT_SECRET')  # Use the actual name of your environment variable
-    callback_url = os.environ.get('EVE_CALLBACK_URL')  # Use the actual name of your environment variable
+    client_id = os.environ.get('eve_client_id')  # Use the actual name of your environment variable
+    client_secret = os.environ.get('eve_client_secret')  # Use the actual name of your environment variable
+    callback_url = os.environ.get('eve_callback_url')  # Use the actual name of your environment variable
 
     auth_string = f'{client_id}:{client_secret}'
     auth_bytes = auth_string.encode('utf-8')
@@ -54,10 +54,15 @@ def callback():
     data = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': callback_url
+        'redirect_uri': callback_url,
+        'client_id': client_id
     }
 
-    token_response = requests.post('https://login.eveonline.com/v2/oauth/token', headers=headers, data=data)
+    token_response = requests.post(
+        'https://login.eveonline.com/v2/oauth/token',
+        headers=headers,
+        data=data
+    )
 
     # Log the response for debugging
     print(f'Status Code: {token_response.status_code}')
